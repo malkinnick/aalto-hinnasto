@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Aalto Beverages — Hinnasto (PDF)</title>
+<style>
+:root{
+  --blue:#0083BF; --blue-d:#006B9C; --azure:#1C8FD1; --light:#99C2D8;
+  --pale:#F2FBFF; --off:#F5F5F5; --ink:#141414; --muted:#5d6b73;
+  --green:#2E7D29; --olive:#8A7600; --border:#e2e8ec;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;padding:0;background:#8d949a;
+  font-family:'Helvetica Neue',Helvetica,Arimo,Arial,sans-serif;color:var(--ink)}
+
+/* ================= GATE + PANEL (screen only) ================= */
+.screen{position:fixed;inset:0;z-index:60;background:var(--blue);color:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:24px}
+#panel{z-index:50}
+.screen .logo-img{width:190px;height:auto;margin-bottom:26px}
+.screen h2{font-size:clamp(20px,4.4vw,27px);margin:0 0 10px;font-weight:700;line-height:1.2}
+.screen p{margin:0 0 26px;font-size:15px;line-height:1.55;opacity:.92;max-width:34em}
+.g-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn{border:0;border-radius:6px;padding:13px 26px;font-size:15px;font-weight:700;
+  cursor:pointer;font-family:inherit;line-height:1.2}
+.g-yes{background:#fff;color:var(--blue-d)}
+.g-no{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.6)}
+.langtog{position:absolute;top:18px;right:18px;display:flex;gap:6px}
+.langtog button{background:transparent;border:1px solid rgba(255,255,255,.45);color:#fff;
+  border-radius:4px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.langtog button[aria-pressed="true"]{background:#fff;color:var(--blue-d);border-color:#fff}
+.meta-line{font-size:14px;opacity:.85;margin:0 0 22px}
+.meta-line b{font-weight:700;opacity:1}
+.bar{width:min(280px,70vw);height:5px;background:rgba(255,255,255,.28);border-radius:3px;
+  overflow:hidden;margin:0 auto 22px}
+.bar i{display:block;height:100%;width:0;background:#fff;transition:width .18s}
+.dl{background:#fff;color:var(--blue-d);padding:16px 36px;font-size:17px;border-radius:7px}
+.dl[disabled]{opacity:.45;cursor:default}
+.hint{font-size:12.5px;opacity:.8;margin:18px 0 0;max-width:32em;line-height:1.6}
+.linky{background:none;border:0;color:#fff;text-decoration:underline;cursor:pointer;
+  font-size:13.5px;font-family:inherit;margin-top:16px;opacity:.9}
+#topbar{position:fixed;top:0;left:0;right:0;background:var(--blue-d);color:#fff;z-index:40;
+  padding:7px 14px;display:flex;gap:12px;align-items:center;font-size:13px}
+#topbar button{background:#fff;color:var(--blue-d);border:0;border-radius:4px;
+  padding:6px 15px;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit}
+#topbar span{opacity:.85}
+body.preview{padding-top:36px}
+
+/* ================= PRINT SHEET ================= */
+.page{position:relative;width:210mm;height:297mm;background:#fff;margin:6mm auto;
+  padding:13mm 12mm 15mm;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.fillbg{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.pfoot{position:absolute;left:12mm;right:12mm;bottom:7mm;height:8mm;
+  border-top:.4mm solid var(--border);padding-top:1.6mm;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:7pt;color:var(--muted);letter-spacing:.02em;z-index:1}
+.pfoot b{color:var(--blue-d);font-weight:700}
+
+/* ---------- cover ---------- */
+.cover{color:#fff;padding:0}
+.cover .inner{position:relative;z-index:1;height:100%;padding:22mm 18mm 18mm;
+  display:flex;flex-direction:column}
+.cover .logo{height:13mm;width:auto;align-self:flex-start;flex:0 0 auto}
+.cover .wave{margin:auto 0;opacity:.22}
+.cover .wave svg{width:100%;height:38mm;display:block}
+.cover h1{font-size:30pt;line-height:1.08;margin:0 0 3mm;font-weight:700;letter-spacing:-.01em}
+.cover .sub{font-size:12pt;opacity:.92;margin:0 0 12mm;font-weight:400}
+.cover .meta{display:flex;gap:14mm;border-top:.5mm solid rgba(255,255,255,.35);padding-top:6mm;font-size:9pt}
+.cover .meta div span{display:block;opacity:.75;font-size:7.5pt;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1mm}
+.cover .meta div b{font-size:15pt;font-weight:700}
+.cover .foot{margin-top:7mm;font-size:8pt;line-height:1.5;opacity:.85}
+.cover .legal{margin-top:4mm;font-size:7.5pt;line-height:1.45;opacity:.8;
+  border-top:.3mm solid rgba(255,255,255,.3);padding-top:3mm}
+
+/* ---------- toc ---------- */
+h2.sec{font-size:15pt;color:var(--blue-d);margin:0 0 5mm;font-weight:700;position:relative;z-index:1}
+.toc{width:100%;border-collapse:collapse;font-size:10pt;position:relative;z-index:1}
+.toc td{padding:2.4mm 0;border-bottom:.3mm solid var(--border)}
+.toc td.n{text-align:right;color:var(--muted);width:12mm;padding-right:4mm}
+.toc td.p{text-align:right;width:12mm;font-weight:700;color:var(--blue-d)}
+.note{position:relative;margin-top:8mm;border-left:1.2mm solid var(--blue);
+  padding:4mm 5mm;font-size:8.5pt;line-height:1.55;color:#31424b;overflow:hidden}
+.note span{position:relative;z-index:1;display:block}
+.note b{color:var(--blue-d)}
+
+/* ---------- category + rows ---------- */
+.cat{position:relative;overflow:hidden;color:#fff;padding:2.6mm 4mm;border-radius:1.5mm;
+  display:flex;justify-content:space-between;align-items:baseline;margin:0 0 3mm;z-index:1}
+.cat h3{position:relative;z-index:1;margin:0;font-size:12pt;font-weight:700;letter-spacing:.01em}
+.cat>span{position:relative;z-index:1;font-size:8pt;opacity:.85}
+table.items{width:100%;border-collapse:collapse;font-size:8.5pt;position:relative;z-index:1}
+table.items th{background:var(--off);color:var(--blue-d);font-size:7pt;text-transform:uppercase;
+  letter-spacing:.06em;font-weight:700;text-align:left;padding:1.8mm 2mm;border-bottom:.4mm solid var(--border)}
+table.items th.r,table.items td.r{text-align:right}
+table.items td{padding:1.8mm 2mm;border-bottom:.3mm solid var(--border);vertical-align:middle}
+tr.alt td{background:var(--pale)}
+td.th{width:17mm;padding:1.2mm 2mm}
+td.th img{width:14mm;height:14mm;object-fit:contain;display:block}
+.nm{font-weight:700;font-size:9pt;line-height:1.2;color:var(--ink)}
+.sb{font-size:7pt;color:var(--muted);margin-top:.6mm;letter-spacing:.01em}
+.pk{white-space:nowrap;font-size:8pt}
+.price{white-space:nowrap;font-weight:700;font-size:9.5pt;color:var(--blue-d)}
+.badges{margin-top:.8mm;display:flex;gap:1mm;flex-wrap:wrap}
+.b{font-size:5.6pt;font-weight:700;letter-spacing:.04em;padding:.5mm 1.2mm;border-radius:.8mm;
+  border:.25mm solid currentColor;text-transform:uppercase}
+.b.z{color:var(--blue-d)} .b.o{color:var(--green)} .b.g{color:var(--olive)} .b.a{color:#9a3412}
+
+/* ---------- terms page ---------- */
+.terms{font-size:9pt;line-height:1.6;position:relative;z-index:1}
+.terms h4{color:var(--blue-d);font-size:10pt;margin:6mm 0 1.5mm}
+.terms p{margin:0 0 2mm}
+.contact{position:relative;overflow:hidden;margin-top:8mm;padding:5mm;border-radius:2mm;
+  font-size:9pt;line-height:1.7}
+.contact span{position:relative;z-index:1;display:block}
+
+@media print{
+  @page{size:A4 portrait;margin:0}
+  html,body{background:#fff}
+  body.preview{padding-top:0!important}
+  .page{margin:0;box-shadow:none;page-break-after:always;break-after:page}
+  .page:last-child{page-break-after:auto;break-after:auto}
+  #gate,#panel,#topbar{display:none!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== AGE GATE (mirrors the storefront gate; separate origin => own consent) ===== -->
+<div class="screen" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="langtog" id="gateLang">
+    <button data-lang="fi" aria-pressed="true">FI</button>
+    <button data-lang="sv" aria-pressed="false">SE</button>
+    <button data-lang="en" aria-pressed="false">EN</button>
+  </div>
+  <img class="logo-img" src="aalto-logo-white.png" alt="Aalto Beverages" width="512" height="120">
+  <h2 id="gateTitle" data-i="gate_q">Oletko täyttänyt 18 vuotta?</h2>
+  <p data-i="gate_sub">Sivusto sisältää tietoa alkoholijuomista. Vahvista ikäsi jatkaaksesi.</p>
+  <div class="g-actions">
+    <button class="btn g-yes" id="gateYes" data-i="gate_yes">Kyllä, olen täyttänyt 18 v.</button>
+    <button class="btn g-no"  id="gateNo"  data-i="gate_no">En ole vielä 18 v.</button>
+  </div>
+</div>
+
+<!-- ===== DOWNLOAD PANEL ===== -->
+<div class="screen" id="panel" hidden>
+  <div class="langtog" id="panelLang">
+    <button data-lang="fi" aria-pressed="true">FI</button>
+    <button data-lang="sv" aria-pressed="false">SE</button>
+    <button data-lang="en" aria-pressed="false">EN</button>
+  </div>
+  <img class="logo-img" src="aalto-logo-white.png" alt="Aalto Beverages" width="512" height="120">
+  <h2 data-i="dl_title">Tuotehinnasto PDF-muodossa</h2>
+  <p class="meta-line" id="metaLine" data-i="dl_prep">Valmistellaan hinnastoa…</p>
+  <div class="bar"><i id="pb"></i></div>
+  <button class="btn dl" id="dlBtn" disabled data-i="dl_btn">Lataa PDF</button>
+  <p class="hint" id="dlHint" data-i="dl_hint">Valitse tulostusikkunassa kohteeksi «Tallenna PDF-tiedostona», poista ylä- ja alatunnisteet ja jätä taustagrafiikka päälle.</p>
+  <button class="linky" id="previewBtn" data-i="dl_prev">Esikatsele sivut</button>
+</div>
+
+<!-- ===== STICKY BAR (preview mode) ===== -->
+<div id="topbar" hidden>
+  <button id="dlBtn2" data-i="dl_btn">Lataa PDF</button>
+  <span id="barHint" data-i="dl_hint2">Poista selaimen ylä- ja alatunnisteet tulostusasetuksista.</span>
+</div>
+
+<div id="out"></div>
+
+<script>
+/* Aalto B2B catalogue -> gated, print-ready price list.
+   Same Apps Script endpoint as the storefront. No CORS headers there, so JSONP.
+   This page lives on a different origin than the Tilda storefront, so the 18+
+   consent stored by the storefront is not readable here: the gate is required,
+   not redundant. */
+var DATA_URL = "https://script.google.com/macros/s/AKfycbzh5VLIHcL6JiE9xsOtO6cMcVAV6L_lpWI8FU8QuYxPG6BI66Bd28Fv4DiPZh-shjRo/exec";
+var LOGO_PRINT = "aalto-logo-white@3x.png";
+
+var Q = new URLSearchParams(location.search);
+var LANG = (Q.get("lang") || localStorage.getItem("aalto_lang") || "fi").toLowerCase();
+if (["fi","sv","en"].indexOf(LANG) < 0) LANG = "fi";
+var AUTOPRINT = Q.get("auto") === "1";     /* off by default: the gate is the entry point */
+
+/* ---------------- i18n ---------------- */
+var STR = {
+  fi:{gate_q:"Oletko täyttänyt 18 vuotta?",
+      gate_sub:"Sivusto sisältää tietoa alkoholijuomista. Vahvista ikäsi jatkaaksesi.",
+      gate_yes:"Kyllä, olen täyttänyt 18 v.", gate_no:"En ole vielä 18 v.",
+      gate_bye:"Pahoittelut, sinun on oltava vähintään 18-vuotias.",
+      dl_title:"Tuotehinnasto PDF-muodossa", dl_prep:"Valmistellaan hinnastoa…",
+      dl_ready:"__N__ tuotetta · __P__ sivua · päivitetty __D__",
+      dl_btn:"Lataa PDF",
+      dl_hint:"Valitse tulostusikkunassa kohteeksi «Tallenna PDF-tiedostona», poista ylä- ja alatunnisteet ja jätä taustagrafiikka päälle.",
+      dl_hint2:"Poista ylä- ja alatunnisteet tulostusasetuksista.",
+      dl_prev:"Esikatsele sivut", dl_err:"Hinnaston lataus epäonnistui. Yritä uudelleen.",
+      title:"Tuotehinnasto", sub:"Aalto Beverages Oy · B2B-valikoima",
+      items:"Tuotetta", cats:"Tuoteryhmää", updated:"Päivitetty",
+      toc:"Sisällys", th_p:"Tuote", th_pack:"Myyntierä", th_u:"Hinta / kpl", th_c:"Hinta / myyntierä",
+      vat:"alv 0 %", page:"Sivu", of:"/", cont:"jatkuu",
+      b0:"0.0", bo:"Luomu", bg:"Gluteeniton", ba:"Alkoholi",
+      legal:"Vain ammattikäyttöön. Sisältää tietoa alkoholijuomista – ei tarkoitettu alle 18-vuotiaille eikä yleiseen jakeluun.",
+      note:"<b>Hinnat ovat verottomia (alv 0 %) ja tarkoitettu ammattiasiakkaille.</b> Arvonlisävero ja mahdollinen pantti lisätään laskulle. Hinnasto on voimassa julkaisupäivänä; ajantasainen valikoima ja tilaus osoitteessa aaltojuomat.fi/catalogue.",
+      terms:"Tilaus- ja toimitusehdot", contact:"Yhteystiedot",
+      t1:"Tilaaminen", t1b:"Tilaukset otetaan vastaan verkkokatalogin kautta. Alkoholituotteiden tilaaminen edellyttää voimassa olevaa anniskelu- tai vähittäismyyntilupaa, jonka numero pyydetään tilauksen yhteydessä.",
+      t2:"Toimitus", t2b:"Toimitusaika logistiikkakumppanin aikataulun mukaan. Alle 250 € tilauksista veloitetaan toimitusmaksu 19 € (alv 0 %).",
+      t3:"Hinnat ja pantti", t3b:"Kaikki hinnat euroina, alv 0 %. Pantillisten pakkausten pantti lisätään erikseen. Pidätämme oikeuden hinnanmuutoksiin."},
+
+  sv:{gate_q:"Har du fyllt 18 år?",
+      gate_sub:"Webbplatsen innehåller information om alkoholdrycker. Bekräfta din ålder för att fortsätta.",
+      gate_yes:"Ja, jag har fyllt 18 år", gate_no:"Nej, jag är under 18 år",
+      gate_bye:"Tyvärr, du måste ha fyllt 18 år.",
+      dl_title:"Produktprislista i PDF-format", dl_prep:"Prislistan förbereds…",
+      dl_ready:"__N__ produkter · __P__ sidor · uppdaterad __D__",
+      dl_btn:"Ladda ner PDF",
+      dl_hint:"Välj «Spara som PDF» i utskriftsfönstret, ta bort sidhuvud och sidfot och låt bakgrundsgrafiken vara på.",
+      dl_hint2:"Ta bort sidhuvud och sidfot i utskriftsinställningarna.",
+      dl_prev:"Förhandsgranska sidorna", dl_err:"Prislistan kunde inte laddas. Försök igen.",
+      title:"Produktprislista", sub:"Aalto Beverages Oy · B2B-sortiment",
+      items:"Produkter", cats:"Produktgrupper", updated:"Uppdaterad",
+      toc:"Innehåll", th_p:"Produkt", th_pack:"Säljenhet", th_u:"Pris / st", th_c:"Pris / säljenhet",
+      vat:"moms 0 %", page:"Sida", of:"/", cont:"forts.",
+      b0:"0.0", bo:"Ekologisk", bg:"Glutenfri", ba:"Alkohol",
+      legal:"Endast för yrkesbruk. Innehåller information om alkoholdrycker – inte avsedd för personer under 18 år eller för allmän spridning.",
+      note:"<b>Priserna är exklusive moms (0 %) och avsedda för yrkeskunder.</b> Moms och eventuell pant tillkommer på fakturan. Prislistan gäller publiceringsdagen; aktuellt sortiment och beställning på aaltojuomat.fi/catalogue.",
+      terms:"Beställnings- och leveransvillkor", contact:"Kontaktuppgifter",
+      t1:"Beställning", t1b:"Beställningar tas emot via webbkatalogen. Beställning av alkoholprodukter kräver giltigt serverings- eller detaljhandelstillstånd, vars nummer efterfrågas vid beställning.",
+      t2:"Leverans", t2b:"Leveranstid enligt logistikpartnerns tidtabell. För beställningar under 250 € debiteras en leveransavgift på 19 € (moms 0 %).",
+      t3:"Priser och pant", t3b:"Alla priser i euro, moms 0 %. Pant för pantbelagda förpackningar tillkommer separat. Vi förbehåller oss rätten till prisändringar."},
+
+  en:{gate_q:"Are you over 18 years old?",
+      gate_sub:"This site contains information about alcoholic beverages. Confirm your age to continue.",
+      gate_yes:"Yes, I am 18 or older", gate_no:"No, I am under 18",
+      gate_bye:"Sorry, you must be 18 or older.",
+      dl_title:"Product price list as PDF", dl_prep:"Preparing the price list…",
+      dl_ready:"__N__ products · __P__ pages · updated __D__",
+      dl_btn:"Download PDF",
+      dl_hint:"In the print window choose «Save as PDF», turn off headers and footers, and keep background graphics on.",
+      dl_hint2:"Turn off headers and footers in the print settings.",
+      dl_prev:"Preview the pages", dl_err:"Could not load the price list. Please try again.",
+      title:"Product price list", sub:"Aalto Beverages Oy · B2B range",
+      items:"Products", cats:"Categories", updated:"Updated",
+      toc:"Contents", th_p:"Product", th_pack:"Case", th_u:"Price / unit", th_c:"Price / case",
+      vat:"VAT 0 %", page:"Page", of:"/", cont:"continued",
+      b0:"0.0", bo:"Organic", bg:"Gluten-free", ba:"Alcohol",
+      legal:"For trade use only. Contains information about alcoholic beverages – not intended for persons under 18 or for general distribution.",
+      note:"<b>Prices exclude VAT (0 %) and are intended for trade customers.</b> VAT and any deposit are added on the invoice. This list is valid on the day of issue; the live range and ordering are at aaltojuomat.fi/catalogue.",
+      terms:"Ordering and delivery terms", contact:"Contact",
+      t1:"Ordering", t1b:"Orders are accepted through the online catalogue. Ordering alcoholic products requires a valid licence for serving or retail sale; the licence number is requested with the order.",
+      t2:"Delivery", t2b:"Delivery according to our logistics partner's schedule. Orders below EUR 250 carry a delivery fee of EUR 19 (VAT 0 %).",
+      t3:"Prices and deposit", t3b:"All prices in euro, VAT 0 %. Deposit for returnable packaging is added separately. Prices subject to change."}
+};
+var I = STR[LANG];
+
+function applyLang(){
+  I = STR[LANG];
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-i]").forEach(function(el){
+    var k = el.getAttribute("data-i");
+    if (I[k] != null && k !== "dl_ready") el.textContent = I[k];
+  });
+  document.querySelectorAll(".langtog button").forEach(function(b){
+    b.setAttribute("aria-pressed", b.getAttribute("data-lang") === LANG ? "true" : "false");
+  });
+}
+document.querySelectorAll(".langtog button").forEach(function(b){
+  b.onclick = function(){
+    var l = b.getAttribute("data-lang");
+    if (l === LANG) return;
+    localStorage.setItem("aalto_lang", l);
+    /* the sheet is built per language, so reload rather than re-translate in place */
+    var q = new URLSearchParams(location.search); q.set("lang", l);
+    location.search = q.toString();
+  };
+});
+applyLang();
+
+/* ---------------- gate ---------------- */
+var gate = document.getElementById("gate"), panel = document.getElementById("panel");
+function openPanel(){
+  gate.hidden = true; gate.style.display = "none";
+  panel.hidden = false;
+  start();
+}
+document.getElementById("gateYes").onclick = function(){
+  try { localStorage.setItem("aalto_age_ok", "1"); } catch(e){}
+  openPanel();
+};
+document.getElementById("gateNo").onclick = function(){
+  document.body.innerHTML = '<div style="font-family:Arial;padding:60px;text-align:center;'
+    + 'color:#5d6b73;background:#fff;min-height:100vh">' + esc(I.gate_bye) + '</div>';
+};
+/* ---------------- helpers ---------------- */
+/* Solid fills drawn as <img> rather than CSS background: Chrome's
+   "Background graphics" checkbox strips CSS backgrounds from the printed
+   output, but never strips image content. */
+function FILL(c){
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 1 1">'
+    + '<rect width="1" height="1" fill="' + c + '"/></svg>');
+}
+function bg(c){ return '<img class="fillbg" alt="" src="' + FILL(c) + '">'; }
+
+/* The storefront needs w_1100; a 14 mm thumbnail is fully served by w_240
+   (~430 dpi at that size) and downloads ~20x less. Rewrite the leading
+   transform segment whatever it is — a few rows carry a raw versioned URL
+   with no transform at all. */
+function thumb(u){
+  var m = /^(https?:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.*)$/i.exec(u || "");
+  if (!m) return u || "";                       /* not Cloudinary: leave alone */
+  var rest = m[2], seg = rest.split("/")[0];
+  var isTransform = /^[a-z]{1,3}_[^/]*$/i.test(seg) && !/^v\d+$/i.test(seg);
+  if (isTransform) rest = rest.slice(seg.length + 1);
+  return m[1] + "f_auto,q_auto,w_240/" + rest;
+}
+
+var UNIT = {plo:{fi:"plo",sv:"fl",en:"btl"},tlk:{fi:"tlk",sv:"burk",en:"can"},
+            prk:{fi:"prk",sv:"burk",en:"tub"},kpl:{fi:"kpl",sv:"st",en:"pcs"}};
+function vol(v){
+  var m=/^(\d+(?:[.,]\d+)?)\s*ml$/i.exec(String(v||""));
+  if(!m) return v||"";
+  var n=parseFloat(m[1].replace(",","."));
+  return n>=1000 ? String(n/1000).replace(".",",")+" l" : v;
+}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function eur(v){ if(v==null||v==="")return "—";
+  var n=parseFloat(String(v).replace(",",".")); if(isNaN(n))return "—";
+  return n.toFixed(2).replace(".",",")+" €"; }
+function today(){ var d=new Date(),p=function(n){return n<10?"0"+n:n};
+  return p(d.getDate())+"."+p(d.getMonth()+1)+"."+d.getFullYear(); }
+
+var CATS = [], CATNAME = {}, CONAME = {};
+
+function norm(p){
+  var qty = (p.pack && p.pack.qty) || 1;
+  var uc  = (p.pack && p.pack.unit) || "plo";
+  return {
+    name:p.name||"", cat:p.cat||"", img:thumb(p.image||""),
+    country:CONAME[p.country]||"",
+    vol:p.vol||"", qty:qty, unit:(UNIT[uc]||UNIT.plo)[LANG]||uc,
+    abv:p.abv||"", alc:!!p.alc, badges:p.badges||[],
+    pu:p.priceUnit, pc:p.priceCase, dep:p.deposit
+  };
+}
+
+/* ---------------- page builder ---------------- */
+var pages=[], out=document.getElementById("out");
+function newPage(cls){
+  var d=document.createElement("div"); d.className="page"+(cls?" "+cls:"");
+  out.appendChild(d); pages.push(d); return d;
+}
+function pageFoot(d,catLabel){
+  var f=document.createElement("div"); f.className="pfoot";
+  f.innerHTML='<span><b>AALTo.</b> &nbsp;'+esc(I.title)+'</span>'
+            + '<span>'+esc(catLabel||"")+'</span>'
+            + '<span class="pn"></span>';
+  d.appendChild(f);
+}
+function mkTable(){
+  var t=document.createElement("table"); t.className="items";
+  t.innerHTML='<thead><tr><th colspan="2">'+esc(I.th_p)+'</th><th>'+esc(I.th_pack)+'</th>'
+    +'<th class="r">'+esc(I.th_u)+'<br><span style="font-weight:400;text-transform:none">'+esc(I.vat)+'</span></th>'
+    +'<th class="r">'+esc(I.th_c)+'<br><span style="font-weight:400;text-transform:none">'+esc(I.vat)+'</span></th>'
+    +'</tr></thead><tbody></tbody>';
+  return t;
+}
+function mkRow(p,idx){
+  var tr=document.createElement("tr"); if(idx%2) tr.className="alt";
+  var sub=[p.country, vol(p.vol), (p.alc&&p.abv)?(String(p.abv).replace(".",",")+" %"):""]
+          .filter(Boolean).join(" · ");
+  var bd="";
+  if(p.badges.indexOf("0.0")>=0)          bd+='<i class="b z">'+esc(I.b0)+'</i>';
+  if(p.badges.indexOf("LUOMU")>=0)        bd+='<i class="b o">'+esc(I.bo)+'</i>';
+  if(p.badges.indexOf("GLUTEENITON")>=0)  bd+='<i class="b g">'+esc(I.bg)+'</i>';
+  if(p.alc)                               bd+='<i class="b a">'+esc(I.ba)+'</i>';
+  tr.innerHTML='<td class="th">'
+      +(p.img?'<img src="'+esc(p.img)+'" alt="" loading="eager" decoding="sync">':'')+'</td>'
+    +'<td><div class="nm">'+esc(p.name)+'</div><div class="sb">'+esc(sub)+'</div>'
+    +(bd?'<div class="badges">'+bd+'</div>':'')+'</td>'
+    +'<td class="pk">'+p.qty+' × '+esc(p.unit)+'</td>'
+    +'<td class="r price">'+eur(p.pu)+'</td>'
+    +'<td class="r price">'+eur(p.pc)+'</td>';
+  return tr;
+}
+/* a page is full when its content reaches the footer line */
+function fits(d){
+  var f=d.querySelector(".pfoot");
+  var limit=f?f.offsetTop:d.clientHeight;
+  var last=d.querySelector("table.items:last-of-type");
+  return !last || (last.offsetTop+last.offsetHeight) <= limit-6;
+}
+function catBar(label,right){
+  return '<div class="cat">'+bg("#0083BF")+'<h3>'+esc(label)+'</h3>'
+       + '<span>'+esc(right)+'</span></div>';
+}
+
+function build(list){
+  var items=list.map(norm).filter(function(p){return p.name;});
+  var groups={}; items.forEach(function(p){ (groups[p.cat]=groups[p.cat]||[]).push(p); });
+  var order=CATS.map(function(c){return c.id;});
+  var cats=order.filter(function(c){return groups[c]&&groups[c].length;})
+           .concat(Object.keys(groups).filter(function(c){return order.indexOf(c)<0;}));
+
+  /* cover */
+  var cv=newPage("cover");
+  cv.innerHTML=bg("#0083BF")+'<div class="inner">'
+    +'<img class="logo" src="'+LOGO_PRINT+'" alt="Aalto">'
+    +'<div class="wave"><svg viewBox="0 0 600 150" preserveAspectRatio="none" aria-hidden="true">'
+      +'<path d="M0 96 C 90 44 150 44 240 78 S 400 128 490 92 S 570 56 600 62" fill="none" stroke="#fff" stroke-width="3"/>'
+      +'<path d="M0 116 C 100 68 160 68 250 100 S 410 148 500 112 S 575 80 600 86" fill="none" stroke="#fff" stroke-width="1.6" opacity=".65"/>'
+      +'<path d="M0 76 C 80 26 140 26 230 58 S 395 108 485 72 S 568 36 600 42" fill="none" stroke="#fff" stroke-width="1.1" opacity=".45"/>'
+      +'</svg></div>'
+    +'<h1>'+esc(I.title)+'</h1><p class="sub">'+esc(I.sub)+'</p>'
+    +'<div class="meta">'
+      +'<div><span>'+esc(I.items)+'</span><b>'+items.length+'</b></div>'
+      +'<div><span>'+esc(I.cats)+'</span><b>'+cats.length+'</b></div>'
+      +'<div><span>'+esc(I.updated)+'</span><b>'+today()+'</b></div>'
+    +'</div>'
+    +'<div class="foot">Aalto Beverages Oy · Y-tunnus 0980566-5<br>'
+      +'Sahaajankatu 20–22 D 282, 00880 Helsinki<br>info@aaltojuomat.com · aaltojuomat.fi/catalogue</div>'
+    +'<div class="legal">'+esc(I.legal)+'</div>'
+    +'</div>';
+
+  /* contents */
+  var toc=newPage(); toc.innerHTML='<h2 class="sec">'+esc(I.toc)+'</h2>';
+  var tt=document.createElement("table"); tt.className="toc"; toc.appendChild(tt);
+  var note=document.createElement("div"); note.className="note";
+  note.innerHTML=bg("#F2FBFF")+'<span>'+I.note+'</span>'; toc.appendChild(note);
+  pageFoot(toc,"");
+
+  /* category sections */
+  var tocRows=[];
+  cats.forEach(function(c){
+    var rows=groups[c], label=CATNAME[c]||c;
+    var d=newPage(); pageFoot(d,label);
+    tocRows.push({label:label,n:rows.length,page:pages.length});
+    d.insertAdjacentHTML("afterbegin", catBar(label, rows.length+" "+I.items.toLowerCase()));
+    var tbl=mkTable(); d.insertBefore(tbl,d.querySelector(".pfoot"));
+    var tb=tbl.querySelector("tbody");
+    rows.forEach(function(p,idx){
+      var tr=mkRow(p,idx); tb.appendChild(tr);
+      if(!fits(d)){                       /* overflow -> move the row to a fresh page */
+        tb.removeChild(tr);
+        d=newPage(); pageFoot(d,label);
+        d.insertAdjacentHTML("afterbegin", catBar(label, I.cont));
+        tbl=mkTable(); d.insertBefore(tbl,d.querySelector(".pfoot"));
+        tb=tbl.querySelector("tbody"); tb.appendChild(tr);
+      }
+    });
+  });
+
+  /* contents body */
+  tocRows.forEach(function(r,i){
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td class="n">'+(i+1)+'</td><td>'+esc(r.label)+'</td>'
+      +'<td class="n">'+r.n+'</td><td class="p">'+r.page+'</td>';
+    tt.appendChild(tr);
+  });
+
+  /* terms */
+  var tp=newPage(); pageFoot(tp,"");
+  tp.insertAdjacentHTML("afterbegin",'<h2 class="sec">'+esc(I.terms)+'</h2><div class="terms">'
+    +'<h4>'+esc(I.t1)+'</h4><p>'+esc(I.t1b)+'</p>'
+    +'<h4>'+esc(I.t2)+'</h4><p>'+esc(I.t2b)+'</p>'
+    +'<h4>'+esc(I.t3)+'</h4><p>'+esc(I.t3b)+'</p>'
+    +'<div class="contact">'+bg("#F2FBFF")+'<span><b>'+esc(I.contact)+'</b><br>Aalto Beverages Oy<br>'
+    +'Sahaajankatu 20–22 D 282, 00880 Helsinki<br>info@aaltojuomat.com<br>aaltojuomat.fi/catalogue</span></div></div>');
+
+  /* page numbers */
+  var tot=pages.length;
+  pages.forEach(function(d,i){
+    var el=d.querySelector(".pn");
+    if(el) el.innerHTML=esc(I.page)+" <b>"+(i+1)+"</b> "+esc(I.of)+" "+tot;
+  });
+  return {items:items.length, pages:tot};
+}
+
+/* ---------------- wait for every image, then unlock ---------------- */
+function waitImages(cb){
+  var imgs=[].slice.call(document.images), n=imgs.length, done=0;
+  var pb=document.getElementById("pb"), fired=false;
+  function end(){ if(fired) return; fired=true; cb(); }
+  function tick(){
+    done++;
+    if(pb) pb.style.width=Math.round(done/Math.max(n,1)*100)+"%";
+    if(done>=n) end();
+  }
+  if(!n) return end();
+  imgs.forEach(function(im){
+    if(im.complete) return tick();
+    im.addEventListener("load",tick); im.addEventListener("error",tick);
+  });
+  setTimeout(end, 45000);              /* never hang on a stalled CDN */
+}
+
+/* ---------------- data ---------------- */
+var payload=null, started=false;
+function start(){
+  if(started) return; started=true;
+  if(payload) render(payload);
+}
+function boot(j){
+  payload=j;
+  if(started) render(j);
+}
+function render(j){
+  CATS = (j && j.cats) || [];
+  CATS.forEach(function(c){ CATNAME[c.id] = c[LANG] || c.en || c.id; });
+  ((j && j.countries) || []).forEach(function(c){ CONAME[c.id] = c[LANG] || c.en || c.id; });
+  var st = build((j && j.products) || []);
+  waitImages(function(){
+    document.getElementById("metaLine").textContent =
+      I.dl_ready.replace("__N__", st.items).replace("__P__", st.pages).replace("__D__", today());
+    var b=document.getElementById("dlBtn"); b.disabled=false;
+    document.querySelector(".bar").style.visibility="hidden";
+    if(AUTOPRINT) setTimeout(function(){ window.print(); }, 300);
+  });
+}
+function fail(){
+  document.getElementById("metaLine").textContent = I.dl_err;
+  document.querySelector(".bar").style.visibility="hidden";
+}
+
+document.getElementById("dlBtn").onclick  = function(){ window.print(); };
+document.getElementById("dlBtn2").onclick = function(){ window.print(); };
+document.getElementById("previewBtn").onclick = function(){
+  panel.hidden = true;
+  document.getElementById("topbar").hidden = false;
+  document.body.classList.add("preview");
+  window.scrollTo(0,0);
+};
+
+/* returning visitor who already confirmed 18+ on THIS origin, or the offline
+   proof harness, skips straight to the panel. Must run after payload/started
+   are initialised, or the `var` initialisers would reset them. */
+if (window.__AALTO_DATA__) {            /* offline layout proofing */
+  openPanel();
+  boot(window.__AALTO_DATA__);
+} else {
+  try { if (localStorage.getItem("aalto_age_ok") === "1") openPanel(); } catch(e){}
+  window.__cb = function(j){ boot(j); };
+  var s=document.createElement("script");
+  s.src=DATA_URL+(DATA_URL.indexOf("?")<0?"?":"&")+"callback=__cb";
+  s.onerror=fail;
+  document.head.appendChild(s);
+}
+</script>
+</body>
+</html>
