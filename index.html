@@ -56,9 +56,10 @@ body.preview{padding-top:36px}
 .fillbg{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 .pfoot{position:absolute;left:12mm;right:12mm;bottom:7mm;height:8mm;
   border-top:.4mm solid var(--border);padding-top:1.6mm;
-  display:flex;justify-content:space-between;align-items:center;
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;align-content:flex-start;
   font-size:7pt;color:var(--muted);letter-spacing:.02em;z-index:1}
 .pfoot b{color:var(--blue-d);font-weight:700}
+.pfoot .disc{flex:0 0 100%;margin-top:1mm;font-size:5.8pt;letter-spacing:0;color:var(--muted)}
 
 /* ---------- cover ---------- */
 .cover{color:#fff;padding:0}
@@ -105,6 +106,33 @@ td.th img{width:14mm;height:14mm;object-fit:contain;display:block}
 .pk{white-space:nowrap;font-size:8pt}
 .price{white-space:nowrap;font-weight:700;font-size:9.5pt;color:var(--blue-d)}
 .badges{margin-top:.8mm;display:flex;gap:1mm;flex-wrap:wrap}
+/* ---- card grid (3 per row) ---- */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm;position:relative;z-index:1}
+/* padding and gap are tuned so three rows of cards still clear the page footer
+   once the "where to buy" line is in the card - see 35_PDF_Grid_Concepts. */
+.card{border:.3mm solid var(--border);border-radius:1.5mm;padding:2.6mm;
+      display:flex;flex-direction:column;gap:1.2mm;background:#fff;break-inside:avoid}
+.card .cnm{font-weight:700;font-size:8.2pt;line-height:1.14;color:var(--blue-d);
+           text-transform:uppercase;min-height:9.2mm;overflow-wrap:anywhere}
+.card .csb{font-size:7pt;color:var(--muted)}
+.card .cpk{font-size:7.2pt;color:var(--ink)}
+.card .cpr{font-size:7.2pt;color:var(--muted);line-height:1.45}
+.card .cpr b{color:var(--ink)}
+.card .cpr .big{color:var(--blue-d);font-weight:700;font-size:10pt}
+.card .cwh{font-size:6pt;color:var(--ink);line-height:1.15;min-height:2.5mm}
+.card .cwh i{font-style:normal;color:var(--muted);text-transform:uppercase;
+             letter-spacing:.04em;font-size:5.6pt}
+.card .crow{display:flex;gap:3mm;align-items:flex-end;margin-top:.5mm}
+.card .cph{width:17mm;height:26mm;flex:0 0 17mm;object-fit:contain;display:block}
+.card .cean{width:34mm;flex:0 0 34mm;height:16.46mm}
+/* 667:323 is the fixed aspect of the cropped barcode. Pinning the height keeps
+   the page-fill calculation correct before the images have loaded. */
+.card .cean img{width:34mm;height:16.46mm;display:block}
+.card .noean{width:34mm;height:16.46mm;border:.3mm dashed var(--border);color:#9bb0bd;
+             display:flex;align-items:center;justify-content:center;font-size:6pt;text-align:center}
+.card .cde{font-size:6.2pt;color:var(--muted);line-height:1.3;
+           border-top:.3mm solid var(--border);padding-top:1.4mm;min-height:5mm}
+.card .badges{margin-top:0}
 .b{font-size:5.6pt;font-weight:700;letter-spacing:.04em;padding:.5mm 1.2mm;border-radius:.8mm;
   border:.25mm solid currentColor;text-transform:uppercase}
 .b.z{color:var(--blue-d)} .b.o{color:var(--green)} .b.g{color:var(--olive)} .b.a{color:#9a3412}
@@ -200,9 +228,14 @@ var STR = {
       items:"Tuotetta", cats:"Tuoteryhmää", updated:"Päivitetty",
       toc:"Sisällys", th_p:"Tuote", th_pack:"Myyntierä", th_u:"Hinta / kpl", th_c:"Hinta / myyntierä",
       vat:"alv 0 %", page:"Sivu", of:"/", cont:"jatkuu",
+      case_w:"myyntier\u00e4", no_ean:"EAN puuttuu",
+      buy_where:"Myyntikanavat", buy_direct:"Suoraan meilt\u00e4",
+      disc_h:"Markkinointimateriaali",
+      disc_s:"Markkinointimateriaali. Lopullinen hinta ja toimitusehdot sovitaan tilausta tehtäessä.",
+      disc:"Tämä hinnasto on markkinointimateriaalia eikä sitova tarjous. Hinnat ja saatavuus ovat ohjeellisia; lopullinen hinta, toimitusehdot ja toimitusaika sovitaan tilausta tehtäessä.",
       b0:"0.0", bo:"Luomu", bg:"Gluteeniton", ba:"Alkoholi",
       legal:"Vain ammattikäyttöön. Sisältää tietoa alkoholijuomista – ei tarkoitettu alle 18-vuotiaille eikä yleiseen jakeluun.",
-      note:"<b>Hinnat ovat verottomia (alv 0 %) ja tarkoitettu ammattiasiakkaille.</b> Arvonlisävero ja mahdollinen pantti lisätään laskulle. Hinnasto on voimassa julkaisupäivänä; ajantasainen valikoima ja tilaus osoitteessa aaltojuomat.fi/catalogue.",
+      note:"<b>Hinnat ovat verottomia (alv 0 %) ja tarkoitettu ammattiasiakkaille.</b> Arvonlisävero ja mahdollinen pantti lisätään laskulle. Hinnasto vastaa julkaisupäivän hintoja; ajantasainen valikoima ja tilaus osoitteessa aaltojuomat.fi/catalogue.",
       terms:"Tilaus- ja toimitusehdot", contact:"Yhteystiedot",
       t1:"Tilaaminen", t1b:"Tilaukset otetaan vastaan verkkokatalogin kautta. Alkoholituotteiden tilaaminen edellyttää voimassa olevaa anniskelu- tai vähittäismyyntilupaa, jonka numero pyydetään tilauksen yhteydessä.",
       t2:"Toimitus", t2b:"Toimitusaika logistiikkakumppanin aikataulun mukaan. Alle 250 € tilauksista veloitetaan toimitusmaksu 19 € (alv 0 %).",
@@ -222,9 +255,14 @@ var STR = {
       items:"Produkter", cats:"Produktgrupper", updated:"Uppdaterad",
       toc:"Innehåll", th_p:"Produkt", th_pack:"Säljenhet", th_u:"Pris / st", th_c:"Pris / säljenhet",
       vat:"moms 0 %", page:"Sida", of:"/", cont:"forts.",
+      case_w:"s\u00e4ljenhet", no_ean:"EAN saknas",
+      buy_where:"Tillg\u00e4nglig hos", buy_direct:"Direkt fr\u00e5n oss",
+      disc_h:"Marknadsföringsmaterial",
+      disc_s:"Marknadsföringsmaterial. Slutligt pris och leveransvillkor avtalas vid beställning.",
+      disc:"Denna prislista är marknadsföringsmaterial och inte ett bindande erbjudande. Priser och tillgänglighet är vägledande; slutligt pris, leveransvillkor och leveranstid avtalas vid beställning.",
       b0:"0.0", bo:"Ekologisk", bg:"Glutenfri", ba:"Alkohol",
       legal:"Endast för yrkesbruk. Innehåller information om alkoholdrycker – inte avsedd för personer under 18 år eller för allmän spridning.",
-      note:"<b>Priserna är exklusive moms (0 %) och avsedda för yrkeskunder.</b> Moms och eventuell pant tillkommer på fakturan. Prislistan gäller publiceringsdagen; aktuellt sortiment och beställning på aaltojuomat.fi/catalogue.",
+      note:"<b>Priserna är exklusive moms (0 %) och avsedda för yrkeskunder.</b> Moms och eventuell pant tillkommer på fakturan. Prislistan återspeglar priserna på publiceringsdagen; aktuellt sortiment och beställning på aaltojuomat.fi/catalogue.",
       terms:"Beställnings- och leveransvillkor", contact:"Kontaktuppgifter",
       t1:"Beställning", t1b:"Beställningar tas emot via webbkatalogen. Beställning av alkoholprodukter kräver giltigt serverings- eller detaljhandelstillstånd, vars nummer efterfrågas vid beställning.",
       t2:"Leverans", t2b:"Leveranstid enligt logistikpartnerns tidtabell. För beställningar under 250 € debiteras en leveransavgift på 19 € (moms 0 %).",
@@ -244,9 +282,14 @@ var STR = {
       items:"Products", cats:"Categories", updated:"Updated",
       toc:"Contents", th_p:"Product", th_pack:"Case", th_u:"Price / unit", th_c:"Price / case",
       vat:"VAT 0 %", page:"Page", of:"/", cont:"continued",
+      case_w:"case", no_ean:"no EAN",
+      buy_where:"Where to buy", buy_direct:"Direct from us",
+      disc_h:"Marketing material",
+      disc_s:"Marketing material. Final price and delivery terms are agreed when the order is placed.",
+      disc:"This price list is marketing material, not a binding offer. Prices and availability are indicative; the final price, delivery terms and delivery time are agreed when the order is placed.",
       b0:"0.0", bo:"Organic", bg:"Gluten-free", ba:"Alcohol",
       legal:"For trade use only. Contains information about alcoholic beverages – not intended for persons under 18 or for general distribution.",
-      note:"<b>Prices exclude VAT (0 %) and are intended for trade customers.</b> VAT and any deposit are added on the invoice. This list is valid on the day of issue; the live range and ordering are at aaltojuomat.fi/catalogue.",
+      note:"<b>Prices exclude VAT (0 %) and are intended for trade customers.</b> VAT and any deposit are added on the invoice. This list reflects prices on the day of issue; the live range and ordering are at aaltojuomat.fi/catalogue.",
       terms:"Ordering and delivery terms", contact:"Contact",
       t1:"Ordering", t1b:"Orders are accepted through the online catalogue. Ordering alcoholic products requires a valid licence for serving or retail sale; the licence number is requested with the order.",
       t2:"Delivery", t2b:"Delivery according to our logistics partner's schedule. Orders below EUR 250 carry a delivery fee of EUR 19 (VAT 0 %).",
@@ -303,18 +346,22 @@ function FILL(c){
 }
 function bg(c){ return '<img class="fillbg" alt="" src="' + FILL(c) + '">'; }
 
-/* The storefront needs w_1100; a 14 mm thumbnail is fully served by w_240
-   (~430 dpi at that size) and downloads ~20x less. Rewrite the leading
-   transform segment whatever it is — a few rows carry a raw versioned URL
-   with no transform at all. */
-function thumb(u){
-  var m = /^(https?:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.*)$/i.exec(u || "");
-  if (!m) return u || "";                       /* not Cloudinary: leave alone */
-  var rest = m[2], seg = rest.split("/")[0];
-  var isTransform = /^[a-z]{1,3}_[^/]*$/i.test(seg) && !/^v\d+$/i.test(seg);
-  if (isTransform) rest = rest.slice(seg.length + 1);
-  return m[1] + "f_auto,q_auto,w_240/" + rest;
-}
+/* ---- Cloudinary as the single source ----
+   Both assets are derived from the product id, no URL columns involved:
+     photo    -> aalto-catalogue/<id>
+     barcode  -> aalto-barcodes/<id>
+   Verified 02.10.2026: the rule holds for all 155 published products.
+   PHOTO_T / EAN_T are the only place sizing lives. When the named
+   transformations exist in Cloudinary they become "t_aalto_print" / "t_aalto_ean"
+   and nothing else in this file changes. */
+var CLD      = "https://res.cloudinary.com/fdhwqa7v/image/upload/";
+var PHOTO_T  = "c_pad,b_white,w_400,h_400,f_auto,q_auto";
+/* 667 x 323 px = exactly 113 EAN-13 modules (11 quiet + 95 symbol + 7 quiet).
+   Shown 34 mm wide -> module 0.301 mm = 91% magnification, above the 80% GS1 floor.
+   No f_auto / q_auto here on purpose: lossy compression smears bar edges. */
+var EAN_T    = "c_crop,x_75,y_51,w_667,h_323";
+function photoUrl(id){ return id ? CLD + PHOTO_T + "/aalto-catalogue/" + encodeURIComponent(id) : ""; }
+function eanUrl(id){   return id ? CLD + EAN_T   + "/aalto-barcodes/"  + encodeURIComponent(id) : ""; }
 
 var UNIT = {plo:{fi:"plo",sv:"fl",en:"btl"},tlk:{fi:"tlk",sv:"burk",en:"can"},
             prk:{fi:"prk",sv:"burk",en:"tub"},kpl:{fi:"kpl",sv:"st",en:"pcs"}};
@@ -334,15 +381,28 @@ function today(){ var d=new Date(),p=function(n){return n<10?"0"+n:n};
 
 var CATS = [], CATNAME = {}, CONAME = {};
 
+/* Where to buy. The storefront renders Alko as a tracked link and the rest as
+   plain tags; a PDF has no links, so Alko becomes a tag like the others. It is
+   derived from alkoUrl when the wholesaler list does not already name it. */
+function wholesalers(p){
+  var list = Array.isArray(p.wholesalers) ? p.wholesalers.slice() : [];
+  var hasAlko = list.some(function(w){
+    return String(w).trim().toLowerCase().indexOf("alko")===0; });
+  if(!hasAlko && p.alkoUrl) list.unshift("Alko");
+  return list.filter(function(w){ return String(w).trim()!==""; });
+}
 function norm(p){
   var qty = (p.pack && p.pack.qty) || 1;
   var uc  = (p.pack && p.pack.unit) || "plo";
   return {
-    name:p.name||"", cat:p.cat||"", img:thumb(p.image||""),
+    id:p.id||"", name:p.name||"", cat:p.cat||"",
+    img:photoUrl(p.id), ean:eanUrl(p.id),
     country:CONAME[p.country]||"",
     vol:p.vol||"", qty:qty, unit:(UNIT[uc]||UNIT.plo)[LANG]||uc,
     abv:p.abv||"", alc:!!p.alc, badges:p.badges||[],
-    pu:p.priceUnit, pc:p.priceCase, dep:p.deposit
+    pu:p.priceUnit, pc:p.priceCase, dep:p.deposit,
+    wh:wholesalers(p),
+    desc:(LANG==="sv"?p.descSv:LANG==="en"?p.descEn:p.descFi)||""
   };
 }
 
@@ -356,40 +416,51 @@ function pageFoot(d,catLabel){
   var f=document.createElement("div"); f.className="pfoot";
   f.innerHTML='<span><b>AALTo.</b> &nbsp;'+esc(I.title)+'</span>'
             + '<span>'+esc(catLabel||"")+'</span>'
-            + '<span class="pn"></span>';
+            + '<span class="pn"></span>'
+            + '<span class="disc">'+esc(I.disc_s)+'</span>';
   d.appendChild(f);
 }
-function mkTable(){
-  var t=document.createElement("table"); t.className="items";
-  t.innerHTML='<thead><tr><th colspan="2">'+esc(I.th_p)+'</th><th>'+esc(I.th_pack)+'</th>'
-    +'<th class="r">'+esc(I.th_u)+'<br><span style="font-weight:400;text-transform:none">'+esc(I.vat)+'</span></th>'
-    +'<th class="r">'+esc(I.th_c)+'<br><span style="font-weight:400;text-transform:none">'+esc(I.vat)+'</span></th>'
-    +'</tr></thead><tbody></tbody>';
-  return t;
+function mkGrid(){
+  var g=document.createElement("div"); g.className="grid"; return g;
 }
-function mkRow(p,idx){
-  var tr=document.createElement("tr"); if(idx%2) tr.className="alt";
+function mkCard(p){
+  var c=document.createElement("div"); c.className="card";
   var sub=[p.country, vol(p.vol), (p.alc&&p.abv)?(String(p.abv).replace(".",",")+" %"):""]
-          .filter(Boolean).join(" · ");
+          .filter(Boolean).join(" \u00b7 ");
   var bd="";
   if(p.badges.indexOf("0.0")>=0)          bd+='<i class="b z">'+esc(I.b0)+'</i>';
   if(p.badges.indexOf("LUOMU")>=0)        bd+='<i class="b o">'+esc(I.bo)+'</i>';
   if(p.badges.indexOf("GLUTEENITON")>=0)  bd+='<i class="b g">'+esc(I.bg)+'</i>';
   if(p.alc)                               bd+='<i class="b a">'+esc(I.ba)+'</i>';
-  tr.innerHTML='<td class="th">'
-      +(p.img?'<img src="'+esc(p.img)+'" alt="" loading="eager" decoding="sync">':'')+'</td>'
-    +'<td><div class="nm">'+esc(p.name)+'</div><div class="sb">'+esc(sub)+'</div>'
-    +(bd?'<div class="badges">'+bd+'</div>':'')+'</td>'
-    +'<td class="pk">'+p.qty+' × '+esc(p.unit)+'</td>'
-    +'<td class="r price">'+eur(p.pu)+'</td>'
-    +'<td class="r price">'+eur(p.pc)+'</td>';
-  return tr;
+  var ean = p.ean
+      ? '<div class="cean"><img src="'+esc(p.ean)+'" alt="" loading="eager" decoding="sync"'
+        + ' onerror="this.parentNode.className=\'noean\';this.parentNode.textContent=\''+esc(I.no_ean)+'\';"></div>'
+      : '<div class="noean">'+esc(I.no_ean)+'</div>';
+  c.innerHTML =
+      '<div class="cnm">'+esc(p.name)+'</div>'
+    + '<div class="csb">'+esc(sub)+'</div>'
+    + (bd?'<div class="badges">'+bd+'</div>':'')
+    + '<div class="cpk">'+p.qty+' \u00d7 '+esc(p.unit)+'</div>'
+    + '<div class="cpr"><span class="big">'+eur(p.pu)+'</span> / '+esc(p.unit)+' \u00b7 '+esc(I.vat)+'<br>'
+    +   '<b>'+eur(p.pc)+'</b> / '+esc(I.case_w)+' \u00b7 '+esc(I.vat)+'</div>'
+    + '<div class="cwh"><i>'+esc(I.buy_where)+'</i> '
+    +   (p.wh.length ? p.wh.map(esc).join(' \u00b7 ') : esc(I.buy_direct))
+    +   '</div>'
+    + '<div class="crow">'
+    +   (p.img?'<img class="cph" src="'+esc(p.img)+'" alt="" loading="eager" decoding="sync">':'<span class="cph"></span>')
+    +   ean
+    + '</div>'
+    + '<div class="cde">'+esc(p.desc||"")+'</div>';
+  return c;
 }
 /* a page is full when its content reaches the footer line */
 function fits(d){
   var f=d.querySelector(".pfoot");
   var limit=f?f.offsetTop:d.clientHeight;
-  var last=d.querySelector("table.items:last-of-type");
+  /* NB: ":last-of-type" matches by element type, not class — the grid is a div
+     followed by the .pfoot div, so that selector never matches. Take the last
+     .grid explicitly instead. */
+  var gs=d.querySelectorAll(".grid"); var last=gs.length?gs[gs.length-1]:null;
   return !last || (last.offsetTop+last.offsetHeight) <= limit-6;
 }
 function catBar(label,right){
@@ -421,14 +492,14 @@ function build(list){
     +'</div>'
     +'<div class="foot">Aalto Beverages Oy · Y-tunnus 0980566-5<br>'
       +'Sahaajankatu 20–22 D 282, 00880 Helsinki<br>info@aaltojuomat.com · aaltojuomat.fi/catalogue</div>'
-    +'<div class="legal">'+esc(I.legal)+'</div>'
+    +'<div class="legal">'+esc(I.legal)+'<br><b>'+esc(I.disc)+'</b></div>'
     +'</div>';
 
   /* contents */
   var toc=newPage(); toc.innerHTML='<h2 class="sec">'+esc(I.toc)+'</h2>';
   var tt=document.createElement("table"); tt.className="toc"; toc.appendChild(tt);
   var note=document.createElement("div"); note.className="note";
-  note.innerHTML=bg("#F2FBFF")+'<span>'+I.note+'</span>'; toc.appendChild(note);
+  note.innerHTML=bg("#F2FBFF")+'<span><b>'+esc(I.disc)+'</b><br>'+I.note+'</span>'; toc.appendChild(note);
   pageFoot(toc,"");
 
   /* category sections */
@@ -438,16 +509,15 @@ function build(list){
     var d=newPage(); pageFoot(d,label);
     tocRows.push({label:label,n:rows.length,page:pages.length});
     d.insertAdjacentHTML("afterbegin", catBar(label, rows.length+" "+I.items.toLowerCase()));
-    var tbl=mkTable(); d.insertBefore(tbl,d.querySelector(".pfoot"));
-    var tb=tbl.querySelector("tbody");
-    rows.forEach(function(p,idx){
-      var tr=mkRow(p,idx); tb.appendChild(tr);
-      if(!fits(d)){                       /* overflow -> move the row to a fresh page */
-        tb.removeChild(tr);
+    var grid=mkGrid(); d.insertBefore(grid,d.querySelector(".pfoot"));
+    rows.forEach(function(p){
+      var card=mkCard(p); grid.appendChild(card);
+      if(!fits(d)){                       /* overflow -> move the card to a fresh page */
+        grid.removeChild(card);
         d=newPage(); pageFoot(d,label);
         d.insertAdjacentHTML("afterbegin", catBar(label, I.cont));
-        tbl=mkTable(); d.insertBefore(tbl,d.querySelector(".pfoot"));
-        tb=tbl.querySelector("tbody"); tb.appendChild(tr);
+        grid=mkGrid(); d.insertBefore(grid,d.querySelector(".pfoot"));
+        grid.appendChild(card);
       }
     });
   });
@@ -463,6 +533,7 @@ function build(list){
   /* terms */
   var tp=newPage(); pageFoot(tp,"");
   tp.insertAdjacentHTML("afterbegin",'<h2 class="sec">'+esc(I.terms)+'</h2><div class="terms">'
+    +'<h4>'+esc(I.disc_h)+'</h4><p>'+esc(I.disc)+'</p>'
     +'<h4>'+esc(I.t1)+'</h4><p>'+esc(I.t1b)+'</p>'
     +'<h4>'+esc(I.t2)+'</h4><p>'+esc(I.t2b)+'</p>'
     +'<h4>'+esc(I.t3)+'</h4><p>'+esc(I.t3b)+'</p>'
